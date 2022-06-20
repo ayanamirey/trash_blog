@@ -1,0 +1,16 @@
+{% extends 'blog/base.html' %}
+
+{% block title %}
+Удаление
+{% endblock %}
+
+{% block content %}
+<div style="text-align: center; margin: 10% 0">
+    <h2 style="margin-bottom: 20px">Вы точно хотите удалить этот пост?</h2>
+    <form method="POST">{% csrf_token %}
+        {{ form.as_p }}
+        <a class="btn btn-secondary" href="{% url 'post_list' %}">Отмена</a>
+        <button class="btn btn-primary" type="submit">Да</button>
+    </form>
+</div>
+{% endblock %}

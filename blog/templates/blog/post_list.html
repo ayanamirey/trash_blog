@@ -1,0 +1,30 @@
+{% extends 'blog/base.html' %}
+
+{% block title %}
+Главная
+{% endblock %}
+
+{% block content %}
+<div class="row" style="justify-content: space-between">
+    {% for post in items %}
+    <div class="card col-5" style="margin: 20px; padding: 15px">
+        <a href="{% url 'post_detail' post.pk %}">
+            <h3 class="title" style="text-align: center">
+                {{ post.title }}
+            </h3>
+        </a>
+        <p class="text" style="margin-bottom: auto">
+            {{ post.text }}
+        </p>
+        <div style="display: flex; justify-content: space-between; align-items: center;margin: 15px 0 5px 0">
+            <p>
+                Author: {{post.author}}
+            </p>
+            <p class="published_date">
+                {{ post.created_date }}
+            </p>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
