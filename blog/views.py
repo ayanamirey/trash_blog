@@ -2,12 +2,14 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
 from django.contrib.auth.views import LoginView, LogoutView
 from django.http import HttpResponse
+from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView, DetailView, DeleteView, UpdateView
 from django.views.generic.edit import FormMixin
 from blog.forms import PostForm, AuthUserForm, RegisterUserForm, CommentForm
 from blog.middleware import get_current_user
 from blog.models import Post, Comment
+from django.template import Context, Template
 
 
 class PostListView(ListView):
@@ -96,5 +98,14 @@ def update_comment_status(request, pk, type):
     if type == 'public':
         item.status = True
         item.save()
+        template = 'blog/comment_item.html'
+        context = {'item': item, 'status_comment': 'Комментарий опубликован'}
+        return render(request, template, context)
+
+    elif type == 'delete':
+        item.delete()
+        return HttpResponse('''
+                <div class="alert alert-success">Комментарий удален</div>
+        ''')
 
     return HttpResponse('1')
