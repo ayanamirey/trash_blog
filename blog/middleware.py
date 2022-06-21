@@ -1,4 +1,5 @@
 from django.utils.deprecation import MiddlewareMixin
+
 import threading
 
 _local_storage = threading.local()
@@ -17,4 +18,4 @@ def get_current_user():
     request = get_current_request()
     if request is None:
         return None
-    return getattr(_local_storage, 'user', None)
+    return getattr(request, 'user', None)

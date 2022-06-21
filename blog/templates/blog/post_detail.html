@@ -66,7 +66,10 @@
         <p>{{ item.created_date|date:'d.m.Y' }}</p>
     </div>
     <p>
-        Статус комментария: <span style="color: #0a58ca" >{{ item.status }}</span>
+        Статус комментария: {{ item.status }} -
+        <a class="update_status" data-url="{% url 'update_comment_status' item.id 'public' %}" href="#">Опубликовать</a>
+        /
+        <a class="update_status" data-url="{% url 'update_comment_status' item.id 'delete' %}" href="#">Удалить</a>
     </p>
     <p>
         {{ item.text }}
@@ -74,5 +77,29 @@
 </div>
 {% endfor %}
 
+
+{% endblock %}
+
+{% block js %}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+    $('.update_status').click(function () {
+        if (confirm("Вы уверены")) {
+            let url = $(this).attr('data-url')
+            let tag_p = $(this).parent()
+            console.log(url)
+
+            $.ajax({
+                url: url,
+                type: 'GET',
+                success: function (response) {
+                    console.log(response)
+                    console.log(tag_p.html())
+                }
+            })
+        }
+    })
+</script>
 
 {% endblock %}

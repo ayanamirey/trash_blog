@@ -6,7 +6,8 @@ from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView, DetailView, DeleteView, UpdateView
 from django.views.generic.edit import FormMixin
 from blog.forms import PostForm, AuthUserForm, RegisterUserForm, CommentForm
-from blog.models import Post
+from blog.middleware import get_current_user
+from blog.models import Post, Comment
 
 
 class PostListView(ListView):
@@ -88,3 +89,12 @@ class RegisterUserView(CreateView):
         auth_user = authenticate(username=username, password=password)
         login(self.request, auth_user)
         return form_valid
+
+
+def update_comment_status(request, pk, type):
+    item = Comment.objects.get(pk=pk)
+    if type == 'public':
+        item.status = True
+        item.save()
+
+    return HttpResponse('1')

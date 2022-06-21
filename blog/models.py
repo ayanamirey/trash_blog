@@ -1,7 +1,7 @@
-from collections import defaultdict
-
 from django.contrib.auth.models import User
 from django.db import models
+from .middleware import get_current_user
+from django.db.models import Q
 
 
 class Post(models.Model):
@@ -17,7 +17,9 @@ class Post(models.Model):
 
 class StatusFilterComments(models.Manager):
     def get_queryset(self):
-        return super().get_queryset().filter(status=False)
+        return super().get_queryset().filter(
+            Q(status=False, author=get_current_user()) |
+            Q(status=False, post__author=get_current_user()) | Q(status=True))
 
 
 class Comment(models.Model):
@@ -35,5 +37,3 @@ class Comment(models.Model):
 
     def __str__(self):
         return f'{self.text}'
-
-Comment.objects.all()
