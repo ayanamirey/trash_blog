@@ -95,8 +95,12 @@ class RegisterUserView(CreateView):
 
 def update_comment_status(request, pk, type):
     item = Comment.objects.get(pk=pk)
+    if request.user != item.post.author:
+        return HttpResponse('deny')
+
     if type == 'public':
-        item.status = True
+        import operator
+        item.status = operator.not_(item.status)
         item.save()
         template = 'blog/comment_item.html'
         context = {'item': item, 'status_comment': 'Комментарий опубликован'}

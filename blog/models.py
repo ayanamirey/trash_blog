@@ -17,9 +17,11 @@ class Post(models.Model):
 
 class StatusFilterComments(models.Manager):
     def get_queryset(self):
+        user = get_current_user()
+        if not user.is_authenticated:
+            return super().get_queryset().filter(status=True)
         return super().get_queryset().filter(
-            Q(status=False, author=get_current_user()) |
-            Q(status=False, post__author=get_current_user()) | Q(status=True))
+            Q(status=False, author=user) | Q(status=False, post__author=user) | Q(status=True))
 
 
 class Comment(models.Model):
