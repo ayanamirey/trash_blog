@@ -7,9 +7,7 @@ from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView, DetailView, DeleteView, UpdateView
 from django.views.generic.edit import FormMixin
 from blog.forms import PostForm, AuthUserForm, RegisterUserForm, CommentForm
-from blog.middleware import get_current_user
 from blog.models import Post, Comment
-from django.template import Context, Template
 
 
 class PostListView(ListView):
@@ -26,12 +24,19 @@ class PostCreateView(CreateView):
     form_class = PostForm
     success_url = reverse_lazy('post_list')
 
+    def form_valid(self, form):
+        self.object = form.save(commit=False)
+        self.object.author = self.request.user
+        self.object.save()
+        return super().form_valid(form)
+
 
 class PostDetailView(DetailView, FormMixin):
     model = Post
     template_name = 'blog/post_detail.html'
     context_object_name = 'post'
     form_class = CommentForm
+
 
     def get_success_url(self, **kwargs):
         return reverse_lazy('post_detail', kwargs={'pk': self.get_object().id})

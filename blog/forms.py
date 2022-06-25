@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import AuthenticationForm
-from django.forms import Textarea
+from django.forms import Textarea, HiddenInput
 from blog.models import Post, Comment
 
 
@@ -9,6 +9,9 @@ class PostForm(forms.ModelForm):
     class Meta:
         model = Post
         fields = ('title', 'text', 'author')
+        widgets ={
+            'author': HiddenInput()
+        }
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -48,7 +51,7 @@ class RegisterUserForm(forms.ModelForm):
 class CommentForm(forms.ModelForm):
     class Meta:
         model = Comment
-        fields = ('text',)
+        fields = ('text', )
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

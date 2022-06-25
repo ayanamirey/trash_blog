@@ -8,6 +8,7 @@
 <div style="margin: 0 auto" class="col-6">
     <form action="" method="POST"> {% csrf_token %}
         {{ form.as_p }}
+        {{ form.author.as_hidden }}
         <button class="btn btn-primary" type="submit">Создать</button>
     </form>
 </div>

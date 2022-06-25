@@ -21,12 +21,10 @@
                 <a class="nav-link {% if url_post_list == request.path %}active{% endif %}" aria-current="page"
                    href="{{url_post_list}}">Главная</a>
 
-
                 {% if request.user.is_authenticated %}
                 {% url 'post_create' as url_post_create %}
                 <a class="nav-link {% if url_post_create == request.path %}active{% endif %}"
                    href="{{url_post_create}}">Создать новый пост</a>
-
                 {% else %}
                 {% url 'login_page' as url_login_page %}
                 <a class="nav-link {% if url_login_page == request.path %}active{% endif %}"
