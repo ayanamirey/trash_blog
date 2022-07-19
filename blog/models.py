@@ -10,6 +10,7 @@ class Post(models.Model):
     created_date = models.DateTimeField(auto_now_add=True, verbose_name='Created Date')
     author = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Владелец статьи',
                                null=True, blank=True)
+    image = models.ImageField(upload_to='images/', blank=True, null=True, verbose_name='Изображения')
 
     def __str__(self):
         return f'{self.title}'

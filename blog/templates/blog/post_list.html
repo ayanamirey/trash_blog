@@ -9,6 +9,7 @@
     {% for post in items %}
     <div class="card col-5" style="margin: 20px; padding: 15px">
         <a href="{% url 'post_detail' post.pk %}">
+
             <h3 class="title" style="text-align: center">
                 {{ post.title }}
             </h3>
